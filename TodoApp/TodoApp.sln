@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp", "TodoApp.csproj", "{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Services\Services.csproj", "{FD749A08-25C6-4931-B978-D8277F961432}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BF191D1-63D7-46C6-BAB0-3253BC3E7649}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FD749A08-25C6-4931-B978-D8277F961432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD749A08-25C6-4931-B978-D8277F961432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD749A08-25C6-4931-B978-D8277F961432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD749A08-25C6-4931-B978-D8277F961432}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C51A6DB3-281A-4E8F-9DE6-052C136180EC}
+	EndGlobalSection
+EndGlobal

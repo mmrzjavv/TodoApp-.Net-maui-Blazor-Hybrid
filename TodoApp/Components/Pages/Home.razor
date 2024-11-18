@@ -1,0 +1,129 @@
+﻿@page "/"
+@using Services.Entities
+@using Services.UnitOfWork
+@inject UnitOfWork Uow
+
+<h3>Todo List</h3>
+
+<!-- جدول نمایش وظایف -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th> <!-- ستون عنوان وظیفه -->
+            <th>Status</th> <!-- ستون وضعیت -->
+            <th>Actions</th> <!-- ستون عملیات -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var todo in Todos)
+        {
+            <tr>
+                <td>@todo.Title</td>
+                <td>
+                    <input type="checkbox" class="form-check-input"
+                           @bind="todo.IsCompleted"
+                           @bind:event="oninput"
+                           @onchange="() => UpdateTodoStatus(todo)" />
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm" @onclick="() => OpenEditModal(todo)">Edit</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteTodo(todo)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- فرم افزودن وظیفه جدید -->
+<input @bind="NewTodoTitle" placeholder="New Todo" class="form-control my-2" />
+<button class="btn btn-success" @onclick="AddTodo">Add Todo</button>
+
+<!-- مدال ویرایش -->
+<div class="modal fade show" tabindex="-1" style="display: @(ShowEditModal ? "block" : "none");" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Todo</h5>
+                <button type="button" class="btn-close" @onclick="CloseEditModal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="editTitle" class="form-label">Title</label>
+                    <input id="editTitle" class="form-control" @bind="EditingTitle" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="CloseEditModal">Cancel</button>
+                <button class="btn btn-primary" @onclick="SaveEdit">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ShowEditModal)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private List<Todo> Todos = new();
+    private string NewTodoTitle;
+
+    private Todo EditingTodo = null;
+    private string EditingTitle = string.Empty;
+    private bool ShowEditModal = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Todos = await Uow.TodoRepository.GetAllAsync();
+    }
+
+    private async Task AddTodo()
+    {
+        if (!string.IsNullOrWhiteSpace(NewTodoTitle))
+        {
+            var newTodo = new Todo { Title = NewTodoTitle, IsCompleted = false };
+            await Uow.TodoRepository.AddAsync(newTodo);
+            Todos.Add(newTodo);
+            NewTodoTitle = string.Empty;
+        }
+    }
+
+    private async Task DeleteTodo(Todo todo)
+    {
+        await Uow.TodoRepository.DeleteAsync(todo);
+        Todos.Remove(todo);
+    }
+
+    private void OpenEditModal(Todo todo)
+    {
+        EditingTodo = todo;
+        EditingTitle = todo.Title;
+        ShowEditModal = true;
+    }
+
+    private void CloseEditModal()
+    {
+        ShowEditModal = false;
+        EditingTodo = null;
+        EditingTitle = string.Empty;
+    }
+
+    private async Task SaveEdit()
+    {
+        if (EditingTodo != null && !string.IsNullOrWhiteSpace(EditingTitle))
+        {
+            EditingTodo.Title = EditingTitle;
+            await Uow.TodoRepository.UpdateAsync(EditingTodo);
+            ShowEditModal = false;
+            EditingTodo = null;
+            EditingTitle = string.Empty;
+            Todos = await Uow.TodoRepository.GetAllAsync();
+        }
+    }
+
+    private async Task UpdateTodoStatus(Todo todo)
+    {
+        await Uow.TodoRepository.UpdateAsync(todo);
+    }
+}
